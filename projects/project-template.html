@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Name - Krishna Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0a0a0a;
+      color: #e4e7ea;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Starfield Background */
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Back Button */
+    .back-button {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      z-index: 100;
+      color: #e4e7ea;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeIn 0.8s ease 0.5s forwards;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-button:hover {
+      color: #fc8139;
+      transform: translateX(-5px);
+    }
+
+    .back-arrow {
+      font-size: 1.2rem;
+    }
+
+    /* Main Container */
+    .project-detail-container {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 2rem 4rem;
+    }
+
+    /* Project Title */
+    .project-title {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: #e4e7ea;
+      margin-bottom: 3rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 0.8s ease 0.3s forwards;
+      position: relative;
+    }
+
+    .project-title::before {
+      content: '';
+      position: absolute;
+      top: -2rem;
+      left: -2rem;
+      width: 200px;
+      height: 200px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cline x1='50' y1='50' x2='150' y2='50' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3Cline x1='50' y1='100' x2='150' y2='100' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3Cline x1='50' y1='150' x2='150' y2='150' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='2' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='150' cy='50' r='2' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='50' cy='100' r='2' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='150' cy='100' r='2' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='50' cy='150' r='2' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='150' cy='150' r='2' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E") no-repeat;
+      opacity: 0.05;
+      pointer-events: none;
+    }
+
+    /* Project Images */
+    .project-images {
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 0.8s ease 0.5s forwards;
+    }
+
+    .project-image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(252, 129, 57, 0.1);
+      border: 1px solid rgba(228, 231, 234, 0.1);
+    }
+
+    .project-image:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Project Description */
+    .project-description {
+      max-width: 800px;
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 0.8s ease 0.7s forwards;
+    }
+
+    .project-description p {
+      color: #aeb3b8;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-description p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Tech Stack */
+    .tech-stack {
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 0.8s ease 0.9s forwards;
+    }
+
+    .tech-stack-label {
+      color: rgba(228, 231, 234, 0.6);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .tech-stack-items {
+      color: #e4e7ea;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+
+    /* Key Features */
+    .key-features {
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 0.8s ease 1.1s forwards;
+    }
+
+    .key-features-label {
+      color: rgba(228, 231, 234, 0.6);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-item {
+      color: #aeb3b8;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .feature-item::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: #fc8139;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    /* Project Links */
+    .project-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 0.8s ease 1.3s forwards;
+    }
+
+    .project-link {
+      padding: 1rem 2.5rem;
+      background: transparent;
+      border: 1.5px solid #fc8139;
+      color: #fc8139;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-link:hover {
+      box-shadow: 0 0 20px rgba(252, 129, 57, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .project-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(252, 129, 57, 0.1);
+      transition: left 0.3s ease;
+    }
+
+    .project-link:hover::before {
+      left: 0;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .back-button {
+        top: 1.5rem;
+        left: 1.5rem;
+        font-size: 0.8rem;
+      }
+
+      .project-detail-container {
+        padding: 5rem 1.5rem 3rem;
+      }
+
+      .project-title {
+        font-size: clamp(2rem, 6vw, 3rem);
+        margin-bottom: 2rem;
+      }
+
+      .project-description p {
+        font-size: 1rem;
+      }
+
+      .project-links {
+        flex-direction: column;
+      }
+
+      .project-link {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Starfield Background -->
+  <canvas id="starfield"></canvas>
+
+  <!-- Back Button -->
+  <a href="../index.html#projects" class="back-button">
+    <span class="back-arrow">←</span>
+    <span>Back to Projects</span>
+  </a>
+
+  <!-- Project Detail Container -->
+  <div class="project-detail-container">
+    <h1 class="project-title">Project Name</h1>
+
+    <!-- Project Images -->
+    <div class="project-images">
+      <!-- Images will be added here -->
+    </div>
+
+    <!-- Project Description -->
+    <div class="project-description">
+      <p>First paragraph of the project description goes here. This should provide an overview of what the project is about and its main purpose.</p>
+      <p>Second paragraph can dive deeper into the technical aspects, challenges faced, or unique features that make this project stand out.</p>
+      <p>Third paragraph might discuss the impact, results, or what was learned from building this project.</p>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="tech-stack">
+      <div class="tech-stack-label">Tech Stack</div>
+      <div class="tech-stack-items">Python · Flask · React · PostgreSQL</div>
+    </div>
+
+    <!-- Key Features -->
+    <div class="key-features">
+      <div class="key-features-label">Key Features</div>
+      <ul class="feature-list">
+        <li class="feature-item">Feature one description</li>
+        <li class="feature-item">Feature two description</li>
+        <li class="feature-item">Feature three description</li>
+        <li class="feature-item">Feature four description</li>
+      </ul>
+    </div>
+
+    <!-- Project Links -->
+    <div class="project-links">
+      <a href="https://github.com/krishnavallabha" target="_blank" rel="noopener noreferrer" class="project-link">GitHub</a>
+      <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">Live Demo</a>
+    </div>
+  </div>
+
+  <script>
+    // Starfield Animation (same as main page)
+    const starfieldCanvas = document.getElementById('starfield');
+    const starfieldCtx = starfieldCanvas.getContext('2d');
+
+    function resizeCanvas() {
+      starfieldCanvas.width = window.innerWidth;
+      starfieldCanvas.height = window.innerHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Star {
+      constructor() {
+        this.x = Math.random() * starfieldCanvas.width;
+        this.y = Math.random() * starfieldCanvas.height;
+        this.size = Math.random() * 1.5;
+        this.speed = Math.random() * 0.3 + 0.1;
+        this.opacity = Math.random() * 0.5 + 0.3;
+      }
+
+      update() {
+        this.y += this.speed;
+        if (this.y > starfieldCanvas.height) {
+          this.y = 0;
+          this.x = Math.random() * starfieldCanvas.width;
+        }
+      }
+
+      draw() {
+        starfieldCtx.beginPath();
+        starfieldCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        starfieldCtx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        starfieldCtx.fill();
+      }
+    }
+
+    const stars = [];
+    for (let i = 0; i < 100; i++) {
+      stars.push(new Star());
+    }
+
+    function animateStarfield() {
+      starfieldCtx.clearRect(0, 0, starfieldCanvas.width, starfieldCanvas.height);
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+      requestAnimationFrame(animateStarfield);
+    }
+
+    animateStarfield();
+  </script>
+</body>
+</html>
