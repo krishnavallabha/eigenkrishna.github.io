@@ -1,0 +1,2867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Krishna - Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: #0a0a0a;
+      color: #e4e7ea;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Unified Starfield Background - Fixed, spans entire site */
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Top Navigation Bar */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 2rem 3rem;
+      pointer-events: auto;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      background: rgba(10, 10, 10, 0.3);
+    }
+
+    .top-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .top-nav a {
+      color: rgba(228, 231, 234, 0.65);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .top-nav a:hover {
+      color: #fc8139;
+      opacity: 1;
+    }
+
+    .top-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #fc8139;
+      transition: width 0.3s ease;
+    }
+
+    .top-nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Main Content Container */
+    .main-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Section Base Styles */
+    section {
+      min-height: 100vh;
+      position: relative;
+      padding: 8rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .section-content {
+      max-width: 1200px;
+      width: 100%;
+      position: relative;
+      z-index: 15;
+    }
+
+    /* Home Section (Hero) */
+    #home {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    /* Interactive Constellation Canvas - Only in Home Section */
+    #constellationCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+
+    /* Hero Content - No Box */
+    .hero-content {
+      pointer-events: auto;
+      text-align: center;
+      max-width: 1200px;
+      width: 100%;
+      position: relative;
+      z-index: 20;
+    }
+
+
+
+    /* Hero Title */
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: #e4e7ea;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out 0.5s forwards;
+      text-transform: uppercase;
+    }
+
+    /* Hero Subtitle */
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: #aeb3b8;
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out 1s forwards;
+      font-weight: 300;
+    }
+
+    .hero-subheadline {
+      font-size: 0.85em;
+      opacity: 0.8;
+      display: block;
+      margin-top: 0.5rem;
+      font-weight: 300;
+    }
+
+    /* CTA Button */
+    .cta-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: transparent;
+      margin-bottom: 4rem;
+      border: 1.5px solid #fc8139;
+      color: #fc8139;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out 1.5s forwards;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button:hover {
+      box-shadow: 0 0 20px rgba(252, 129, 57, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(252, 129, 57, 0.1);
+      transition: left 0.3s ease;
+    }
+
+    .cta-button:hover::before {
+      left: 0;
+    }
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      animation: fadeInUp 1.5s ease-out 2s forwards, bounce 2s ease-in-out 3s infinite;
+      pointer-events: auto;
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    .scroll-arrow {
+      width: 24px;
+      height: 24px;
+      border-right: 2px solid #fc8139;
+      border-bottom: 2px solid #fc8139;
+      transform: rotate(45deg);
+      transition: all 0.3s ease;
+    }
+
+    .scroll-indicator:hover .scroll-arrow {
+      box-shadow: 0 0 15px rgba(252, 129, 57, 0.6);
+      transform: rotate(45deg) translateY(5px);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* Constellation Builder Controls */
+    .constellation-controls {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 25;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      pointer-events: auto;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .constellation-controls.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .constellation-controls:hover {
+      opacity: 1;
+    }
+
+    .control-btn {
+      background: rgba(10, 10, 10, 0.6);
+      border: 1px solid rgba(228, 231, 234, 0.25);
+      color: rgba(228, 231, 234, 0.9);
+      padding: 0.7rem 1.5rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      font-family: inherit;
+      min-width: 100px;
+    }
+
+    .control-btn:hover {
+      border-color: #fc8139;
+      color: #fc8139;
+      box-shadow: 0 0 15px rgba(252, 129, 57, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .control-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* Section Headings */
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: #e4e7ea;
+      margin-bottom: 3rem;
+      text-align: center;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .section-title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-text {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: #aeb3b8;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.2s;
+    }
+
+    .section-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-text + .section-text {
+      margin-top: 2rem;
+    }
+
+    /* About Section */
+    #about {
+      background: transparent;
+    }
+
+    .quote-text {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: #e4e7ea;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.4;
+      font-style: italic;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .quote-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .name-text {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 300;
+      color: #e4e7ea;
+      text-align: center;
+      margin-bottom: 1rem;
+      letter-spacing: 0.1em;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.2s;
+    }
+
+    .name-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .title-text {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: #aeb3b8;
+      text-align: center;
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.4s;
+    }
+
+    .title-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .bio-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .quote-block {
+      margin: 3rem auto 0;
+      padding: 2rem;
+      border-left: 2px solid #fc8139;
+      background: rgba(252, 129, 57, 0.05);
+      font-style: italic;
+      color: #aeb3b8;
+      line-height: 1.8;
+      max-width: 800px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.6s;
+    }
+
+    .quote-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Projects Section */
+    #projects {
+      background: transparent;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.4s;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (min-width: 1200px) {
+      .project-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+      .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .section-subtitle {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: #aeb3b8;
+      text-align: center;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.2s;
+    }
+
+    .section-subtitle.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .view-all-container {
+      text-align: center;
+      margin: 2rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.3s;
+    }
+
+    .view-all-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .view-all-btn {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      background: transparent;
+      border: 1px solid #fc8139;
+      color: #fc8139;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .view-all-btn:hover {
+      box-shadow: 0 0 20px rgba(252, 129, 57, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .view-all-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(252, 129, 57, 0.1);
+      transition: left 0.3s ease;
+    }
+
+    .view-all-btn:hover::before {
+      left: 0;
+    }
+
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.4s;
+    }
+
+    .filter-buttons.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(228, 231, 234, 0.3);
+      color: rgba(228, 231, 234, 0.7);
+      padding: 0.6rem 1.5rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: inherit;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      border-color: #fc8139;
+      color: #fc8139;
+      box-shadow: 0 0 10px rgba(252, 129, 57, 0.2);
+    }
+
+    .project-grid.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .project-card {
+      background: rgba(228, 231, 234, 0.02);
+      border: 1px solid rgba(228, 231, 234, 0.08);
+      padding: 2.5rem;
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .project-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .project-card:hover {
+      border-color: rgba(252, 129, 57, 0.3);
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(252, 129, 57, 0.15);
+    }
+
+    .project-name {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      color: #e4e7ea;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+    }
+
+    .project-description {
+      color: #aeb3b8;
+      line-height: 1.7;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .project-tech-tag {
+      color: rgba(228, 231, 234, 0.5);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: auto;
+    }
+
+    .project-btn {
+      flex: 1;
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: 1px solid rgba(228, 231, 234, 0.2);
+      color: #e4e7ea;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-btn:hover {
+      border-color: #fc8139;
+      color: #fc8139;
+      box-shadow: 0 0 15px rgba(252, 129, 57, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .project-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(252, 129, 57, 0.05);
+      transition: left 0.3s ease;
+    }
+
+    .project-btn:hover::before {
+      left: 0;
+    }
+
+    /* Journey Section - Cosmic Timeline */
+    #journey {
+      background: transparent;
+      position: relative;
+      min-height: 100vh;
+      padding: 6rem 2rem;
+      overflow: hidden;
+    }
+
+    .journey-container {
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* Vertical Cosmic Beam */
+    .cosmic-beam {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      transform: translateX(-50%);
+      background: linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.7) 10%,
+        rgba(255, 255, 255, 0.7) 90%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.3),
+        0 0 40px rgba(255, 255, 255, 0.15);
+      animation: beamPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes beamPulse {
+      0%, 100% {
+        opacity: 0.6;
+        box-shadow: 
+          0 0 20px rgba(255, 255, 255, 0.3),
+          0 0 40px rgba(255, 255, 255, 0.15);
+      }
+      50% {
+        opacity: 0.8;
+        box-shadow: 
+          0 0 30px rgba(255, 255, 255, 0.4),
+          0 0 60px rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    /* Milestone Container */
+    .milestone {
+      position: relative;
+      margin: 8rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+    }
+
+    .milestone:nth-child(odd) {
+      flex-direction: row;
+    }
+
+    .milestone:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    /* Star Node */
+    .star-node {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(252, 129, 57, 0.3),
+        0 0 30px rgba(252, 129, 57, 0.2);
+      z-index: 10;
+      opacity: 0;
+      scale: 0;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .star-node.revealed {
+      opacity: 1;
+      scale: 1;
+    }
+
+    .star-node.revealed.active {
+      scale: 1.2;
+      box-shadow: 
+        0 0 15px rgba(255, 255, 255, 1),
+        0 0 30px rgba(252, 129, 57, 0.5),
+        0 0 45px rgba(252, 129, 57, 0.3);
+    }
+
+    /* Connecting Line */
+    .connecting-line {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.6);
+      transform-origin: left center;
+      z-index: 5;
+      opacity: 0;
+      box-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+      animation: lineShimmer 2s ease-in-out infinite;
+    }
+
+    .milestone:nth-child(odd) .connecting-line {
+      transform: translateY(-50%);
+    }
+
+    .milestone:nth-child(even) .connecting-line {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .connecting-line.revealed {
+      opacity: 1;
+      animation: drawLine 0.8s ease-out forwards, lineShimmer 2s ease-in-out infinite 0.8s;
+    }
+
+    @keyframes drawLine {
+      to {
+        width: 200px;
+      }
+    }
+
+    @keyframes lineShimmer {
+      0%, 100% {
+        opacity: 0.6;
+      }
+      50% {
+        opacity: 0.9;
+      }
+    }
+
+    /* Glassmorphic Card */
+    .milestone-card {
+      width: 480px;
+      background: rgba(255, 255, 255, 0.06);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 0 30px rgba(252, 129, 57, 0.15);
+      opacity: 0;
+      z-index: 8;
+    }
+
+    .milestone:nth-child(odd) .milestone-card {
+      margin-left: 220px;
+      transform: translateX(-40px);
+    }
+
+    .milestone:nth-child(even) .milestone-card {
+      margin-right: 220px;
+      transform: translateX(40px);
+    }
+
+    .milestone-card.revealed {
+      opacity: 1;
+      transform: translateX(0);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .milestone-year,
+    .milestone-date {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 1rem;
+      color: #fc8139;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.1em;
+      font-weight: 400;
+    }
+
+    .milestone-role {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 1.8rem;
+      color: #e4e7ea;
+      margin-bottom: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+    }
+
+    .milestone-description {
+      font-size: 1rem;
+      color: rgba(228, 231, 234, 0.8);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* Constellation Icon */
+    .constellation-icon {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 40px;
+      height: 40px;
+      opacity: 0.4;
+    }
+
+    .constellation-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .constellation-icon line {
+      stroke: rgba(255, 255, 255, 0.6);
+      stroke-width: 1;
+      animation: iconShimmer 3s ease-in-out infinite;
+    }
+
+    .constellation-icon circle {
+      fill: rgba(255, 255, 255, 0.8);
+      animation: iconPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes iconShimmer {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .cosmic-beam {
+        width: 3px;
+      }
+
+      .milestone {
+        flex-direction: column !important;
+        margin: 6rem 0;
+      }
+
+      .milestone-card {
+        width: 100%;
+        max-width: 420px;
+        margin: 2rem 0 0 0 !important;
+        transform: translateY(20px) !important;
+      }
+
+      .milestone-card.revealed {
+        transform: translateY(0) !important;
+      }
+
+      .connecting-line {
+        width: 2px !important;
+        height: 60px !important;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%) !important;
+        animation: drawLineVertical 0.8s ease-out forwards, lineShimmer 2s ease-in-out infinite 0.8s;
+      }
+
+      @keyframes drawLineVertical {
+        to {
+          height: 60px;
+        }
+      }
+
+      .star-node {
+        top: 0;
+      }
+    }
+
+    /* Resume Section */
+    #resume {
+      background: transparent;
+    }
+
+    .skills-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 3rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.3s;
+    }
+
+    .skills-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skill-badge {
+      padding: 0.8rem 1.5rem;
+      background: rgba(228, 231, 234, 0.05);
+      border: 1px solid rgba(228, 231, 234, 0.2);
+      color: #e4e7ea;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+    }
+
+    .skill-badge:hover {
+      border-color: #fc8139;
+      color: #fc8139;
+      box-shadow: 0 0 15px rgba(252, 129, 57, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .resume-actions {
+      text-align: center;
+      margin-top: 2rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.5s;
+    }
+
+    .resume-actions.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .resume-btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: transparent;
+      border: 1.5px solid #fc8139;
+      color: #fc8139;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    .resume-btn:hover {
+      box-shadow: 0 0 20px rgba(252, 129, 57, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .resume-link {
+      display: block;
+      color: #aeb3b8;
+      text-decoration: none;
+      margin-top: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .resume-link:hover {
+      color: #fc8139;
+    }
+
+    /* Tech Stack Section */
+    #tech-stack {
+      background: transparent;
+    }
+
+    .tech-stack-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: #e4e7ea;
+      text-align: center;
+      margin-bottom: 4rem;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .tech-stack-title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tech-category {
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .tech-category.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tech-category-title {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: #e4e7ea;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .tech-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .tech-item {
+      font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+      color: rgba(228, 231, 234, 0.8);
+      position: relative;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .tech-item::after {
+      content: '·';
+      margin-left: 1rem;
+      color: rgba(228, 231, 234, 0.4);
+    }
+
+    .tech-item:last-child::after {
+      display: none;
+    }
+
+    .tech-item:hover {
+      color: #fc8139;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .tech-category {
+        margin-bottom: 2.5rem;
+      }
+
+      .tech-items {
+        gap: 0.8rem;
+      }
+
+      .tech-item {
+        font-size: 0.9rem;
+      }
+    }
+
+
+    /* Contact Section */
+    #contact {
+      background: transparent;
+    }
+
+    .contact-content {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease 0.2s;
+    }
+
+    .contact-content.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .contact-link {
+      color: #fc8139;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 1rem 2rem;
+      border: 1px solid #fc8139;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .contact-link:hover {
+      background: rgba(252, 129, 57, 0.1);
+      box-shadow: 0 0 20px rgba(252, 129, 57, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .contact-phone {
+      color: #aeb3b8;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .contact-location {
+      color: #aeb3b8;
+      font-size: 1rem;
+      margin-top: 1rem;
+      opacity: 0.7;
+    }
+
+    /* Responsive Design - Tablet */
+    @media (max-width: 1024px) {
+      section {
+        padding: 6rem 3rem;
+      }
+
+      .hero-title {
+        font-size: clamp(2.5rem, 6vw, 5rem);
+      }
+
+      .hero-subtitle {
+        font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      }
+
+      .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+
+      .project-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .milestone-card {
+        max-width: 450px;
+      }
+
+      .bio-content {
+        max-width: 100%;
+      }
+
+      .quote-block {
+        padding: 1.5rem;
+      }
+    }
+
+    /* Responsive Design - Mobile */
+    @media (max-width: 768px) {
+      .top-nav {
+        padding: 1rem 1rem;
+      }
+
+      .top-nav ul {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .top-nav a {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.8rem;
+      }
+
+      section {
+        padding: 4rem 1.5rem;
+      }
+
+      .section-content {
+        padding: 1.5rem;
+      }
+
+      .hero-title {
+        font-size: clamp(2rem, 8vw, 4rem);
+        letter-spacing: 0.15em;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        padding: 0 1rem;
+        line-height: 1.6;
+      }
+
+      .hero-subtitle br {
+        display: none;
+      }
+
+      .cta-button {
+        padding: 0.9rem 2rem;
+        font-size: 0.9rem;
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .section-title {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        margin-bottom: 2rem;
+      }
+
+      .section-text {
+        font-size: clamp(0.95rem, 2vw, 1.1rem);
+        line-height: 1.7;
+      }
+
+      .quote-text {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        line-height: 1.4;
+      }
+
+      .name-text {
+        font-size: clamp(1.2rem, 3vw, 2rem);
+      }
+
+      .title-text {
+        font-size: clamp(0.9rem, 2vw, 1.2rem);
+      }
+
+      .bio-content {
+        margin-top: 2rem;
+      }
+
+      .quote-block {
+        padding: 1.5rem;
+        margin: 2rem auto 0;
+        font-size: clamp(0.95rem, 2vw, 1.1rem);
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .project-card {
+        padding: 1.5rem;
+      }
+
+      .project-name {
+        font-size: 1.4rem;
+      }
+
+      .project-description {
+        font-size: 0.9rem;
+      }
+
+      .project-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .project-btn {
+        width: 100%;
+      }
+
+      .filter-buttons {
+        gap: 0.75rem;
+        margin: 1.5rem 0;
+      }
+
+      .filter-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .view-all-btn {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.75rem;
+      }
+
+      .tech-stack-title {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        margin-bottom: 3rem;
+      }
+
+      .tech-category {
+        margin-bottom: 2.5rem;
+      }
+
+      .tech-category-title {
+        font-size: clamp(1rem, 2.5vw, 1.3rem);
+        margin-bottom: 1rem;
+      }
+
+      .tech-items {
+        gap: 0.75rem;
+        justify-content: center;
+      }
+
+      .tech-item {
+        font-size: clamp(0.85rem, 2vw, 1rem);
+      }
+
+      .cosmic-beam {
+        width: 3px;
+      }
+
+      .milestone {
+        flex-direction: column !important;
+        margin: 4rem 0;
+      }
+
+      .milestone-card {
+        width: 100%;
+        max-width: 100%;
+        margin: 2rem 0 0 0 !important;
+        transform: translateY(20px) !important;
+        padding: 1.5rem;
+      }
+
+      .milestone-card.revealed {
+        transform: translateY(0) !important;
+      }
+
+      .milestone-card h3 {
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+      }
+
+      .milestone-card p {
+        font-size: clamp(0.9rem, 2vw, 1rem);
+      }
+
+      .milestone-date {
+        font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+      }
+
+      .connecting-line {
+        width: 2px !important;
+        height: 60px !important;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%) !important;
+        animation: drawLineVertical 0.8s ease-out forwards, lineShimmer 2s ease-in-out infinite 0.8s;
+      }
+
+      @keyframes drawLineVertical {
+        to {
+          height: 60px;
+        }
+      }
+
+      .star-node {
+        top: 0;
+        width: 6px;
+        height: 6px;
+      }
+
+      .skills-container {
+        gap: 0.75rem;
+        margin: 2rem 0;
+      }
+
+      .skill-badge {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+      }
+
+      .resume-btn {
+        padding: 0.9rem 2rem;
+        font-size: 0.9rem;
+      }
+
+      .contact-info {
+        gap: 1rem;
+      }
+
+      .contact-link {
+        font-size: 0.95rem;
+        padding: 0.9rem 1.8rem;
+      }
+
+      .contact-phone {
+        font-size: 1rem;
+      }
+
+      .contact-location {
+        font-size: 0.9rem;
+      }
+
+      .constellation-controls {
+        bottom: 1rem;
+        right: 1rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.5rem;
+      }
+
+      .control-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        min-width: 70px;
+      }
+
+      .scroll-indicator {
+        bottom: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .top-nav {
+        padding: 0.8rem 0.5rem;
+      }
+
+      .top-nav ul {
+        gap: 0.5rem;
+      }
+
+      .top-nav a {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.6rem;
+      }
+
+      section {
+        padding: 3rem 1rem;
+      }
+
+      .section-content {
+        padding: 1rem;
+      }
+
+      .hero-title {
+        font-size: clamp(1.8rem, 10vw, 3rem);
+        letter-spacing: 0.1em;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(0.85rem, 3vw, 1rem);
+      }
+
+      .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.85rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .section-title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .quote-text {
+        font-size: clamp(1.2rem, 5vw, 2rem);
+      }
+
+      .name-text {
+        font-size: clamp(1rem, 4vw, 1.8rem);
+      }
+
+      .project-card {
+        padding: 1.2rem;
+      }
+
+      .project-card h3 {
+        font-size: 1.1rem;
+      }
+
+      .filter-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+      }
+
+      .tech-category-title {
+        font-size: clamp(0.95rem, 3vw, 1.2rem);
+      }
+
+      .tech-item {
+        font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+      }
+
+      .milestone {
+        margin: 3rem 0;
+      }
+
+      .milestone-card {
+        padding: 1.2rem;
+      }
+
+      .constellation-controls {
+        bottom: 0.75rem;
+        right: 0.5rem;
+        left: 0.5rem;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .control-btn {
+        flex: 1;
+        min-width: 0;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.7rem;
+      }
+
+      .contact-links {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
+      .contact-link {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+      }
+
+      .skills-container {
+        gap: 0.5rem;
+      }
+
+      .skill-badge {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Extra Small Screens (320px - 360px) */
+    @media (max-width: 360px) {
+      .top-nav {
+        padding: 0.6rem 0.3rem;
+      }
+
+      .top-nav ul {
+        gap: 0.3rem;
+      }
+
+      .top-nav a {
+        font-size: 0.6rem;
+        padding: 0.25rem 0.5rem;
+      }
+
+      section {
+        padding: 2.5rem 0.8rem;
+      }
+
+      .section-content {
+        padding: 0.8rem;
+      }
+
+      .hero-title {
+        font-size: clamp(1.5rem, 12vw, 2.5rem);
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+        padding: 0 0.5rem;
+        line-height: 1.5;
+      }
+
+      .hero-subheadline {
+        font-size: 0.75em;
+        margin-top: 0.4rem;
+      }
+
+      .cta-button {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.8rem;
+        margin-top: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .section-title {
+        font-size: clamp(1.3rem, 7vw, 1.8rem);
+        margin-bottom: 1.2rem;
+      }
+
+      .quote-text {
+        font-size: clamp(1rem, 6vw, 1.8rem);
+        line-height: 1.3;
+      }
+
+      .name-text {
+        font-size: clamp(0.9rem, 5vw, 1.6rem);
+        margin-bottom: 1rem;
+      }
+
+      .section-text {
+        font-size: clamp(0.85rem, 2.5vw, 1rem);
+        line-height: 1.6;
+      }
+
+      .quote-block {
+        padding: 1rem;
+        margin: 1.5rem auto 0;
+        font-size: clamp(0.85rem, 2.5vw, 1rem);
+      }
+
+      .project-card {
+        padding: 1rem;
+      }
+
+      .project-card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .filter-buttons {
+        gap: 0.5rem;
+        margin: 1.2rem 0;
+      }
+
+      .filter-btn {
+        padding: 0.35rem 0.7rem;
+        font-size: 0.7rem;
+      }
+
+      .view-all-btn {
+        padding: 0.45rem 1rem;
+        font-size: 0.7rem;
+      }
+
+      .tech-stack-title {
+        font-size: clamp(1.5rem, 7vw, 2rem);
+        margin-bottom: 2rem;
+      }
+
+      .tech-category {
+        margin-bottom: 2rem;
+      }
+
+      .tech-category-title {
+        font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+        margin-bottom: 0.8rem;
+      }
+
+      .tech-items {
+        gap: 0.6rem;
+      }
+
+      .tech-item {
+        font-size: clamp(0.75rem, 2.8vw, 0.9rem);
+      }
+
+      .milestone {
+        margin: 2.5rem 0;
+      }
+
+      .milestone-card {
+        padding: 1rem;
+      }
+
+      .milestone-date {
+        font-size: clamp(0.7rem, 2vw, 0.85rem);
+      }
+
+      .milestone-role {
+        font-size: clamp(1rem, 4vw, 1.4rem);
+        margin-bottom: 0.8rem;
+        line-height: 1.2;
+      }
+
+      .milestone-description {
+        font-size: clamp(0.85rem, 2.5vw, 1rem);
+        line-height: 1.5;
+      }
+
+      .skills-container {
+        gap: 0.4rem;
+      }
+
+      .skill-badge {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.75rem;
+      }
+
+      .resume-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.85rem;
+      }
+
+      .contact-link {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        max-width: 100%;
+      }
+
+      .contact-phone {
+        font-size: 0.95rem;
+      }
+
+      .contact-location {
+        font-size: 0.85rem;
+      }
+
+      .constellation-controls {
+        bottom: 0.5rem;
+        right: 0.3rem;
+        left: 0.3rem;
+        gap: 0.4rem;
+      }
+
+      .control-btn {
+        padding: 0.45rem 0.7rem;
+        font-size: 0.65rem;
+      }
+
+      .scroll-indicator {
+        bottom: 0.5rem;
+        width: 30px;
+        height: 30px;
+      }
+
+      .scroll-arrow {
+        width: 8px;
+        height: 8px;
+      }
+    }
+
+    /* Ultra Small Screens (below 320px) */
+    @media (max-width: 320px) {
+      .top-nav {
+        padding: 0.5rem 0.2rem;
+      }
+
+      .top-nav ul {
+        gap: 0.2rem;
+      }
+
+      .top-nav a {
+        font-size: 0.55rem;
+        padding: 0.2rem 0.4rem;
+      }
+
+      section {
+        padding: 2rem 0.5rem;
+      }
+
+      .section-content {
+        padding: 0.5rem;
+      }
+
+      .hero-title {
+        font-size: clamp(1.3rem, 14vw, 2rem);
+      }
+
+      .hero-subtitle {
+        font-size: clamp(0.75rem, 4vw, 0.9rem);
+      }
+
+      .section-title {
+        font-size: clamp(1.2rem, 8vw, 1.6rem);
+      }
+
+      .quote-text {
+        font-size: clamp(0.95rem, 7vw, 1.6rem);
+      }
+
+      .name-text {
+        font-size: clamp(0.85rem, 6vw, 1.4rem);
+      }
+
+      .section-text {
+        font-size: clamp(0.8rem, 3vw, 0.95rem);
+      }
+
+      .project-card {
+        padding: 0.9rem;
+      }
+
+      .filter-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.65rem;
+      }
+
+      .tech-item {
+        font-size: clamp(0.7rem, 3vw, 0.85rem);
+      }
+
+      .milestone-card {
+        padding: 0.9rem;
+      }
+
+      .milestone-role {
+        font-size: clamp(0.95rem, 5vw, 1.2rem);
+      }
+
+      .control-btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.6rem;
+      }
+    }
+
+    /* Landscape orientation for small screens */
+    @media (max-height: 500px) and (orientation: landscape) {
+      section {
+        padding: 3rem 1.5rem;
+      }
+
+      .hero-title {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        margin-bottom: 1rem;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .section-title {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .milestone {
+        margin: 3rem 0;
+      }
+    }
+
+    /* Ensure no horizontal overflow on any screen */
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
+    img, canvas, svg {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Unified Starfield Background -->
+  <canvas id="starfield"></canvas>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#journey">My Journey</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Home Section -->
+    <section id="home">
+      <!-- Interactive Constellation Canvas (only in home section) -->
+      <canvas id="constellationCanvas"></canvas>
+
+      <!-- Hero Content -->
+      <div class="hero-content">
+        <h1 class="hero-title">KRISHNA</h1>
+        <p class="hero-subtitle">
+          Where curiosity meets data and the priors don't stay fixed.<br>
+          <span class="hero-subheadline">Focused on learning from data, modelling uncertainty and understanding complex systems.</span>
+        </p>
+        <a href="#projects" class="cta-button">Explore My Work</a>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator" onclick="scrollToSection('#about')">
+        <div class="scroll-arrow"></div>
+      </div>
+
+      <!-- Constellation Builder Controls -->
+      <div class="constellation-controls">
+        <button class="control-btn" onclick="clearConstellation()">Clear</button>
+        <button class="control-btn" onclick="undoLastLine()">Undo</button>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+      <div class="section-content">
+        <h1 class="quote-text">
+          "As long as I'm alive, I have infinite chances."
+        </h1>
+        <h2 class="name-text">Krishna Vallabha Goswami</h2>
+        <div class="bio-content">
+          <p class="section-text">
+            I'm Krishna Vallabha Goswami, a Data Science undergraduate who enjoys standing at the crossroads of artificial intelligence/machine learning, mathematics, and markets. I'm drawn to problems that look complicated from the outside but reveal their structure when you ask the right questions.
+          </p>
+          <p class="section-text">
+            What pulls me towards AI/ML and quantitative finance isn't just the models—it's the mindset. Understanding uncertainty. Reasoning under incomplete information. Turning patterns into decisions. It's a world where logic competes with randomness, and I like operating exactly on that edge.
+          </p>
+          <p class="section-text">
+            I'm the kind of person who notices details, thinks deeply, and builds deliberately. Whether it's a research idea, a trading model, or a learning pipeline, I enjoy creating systems that make sense of chaos and keep improving over time.
+          </p>
+          <p class="section-text">
+            Outside of work, I read a lot. Philosophy, psychology, history, finance. Books sharpen my instincts, challenge my assumptions, and help me see the world in gradients rather than absolutes. I treat my mind like a long-term project: always refining, always updating, always improving my priors.
+          </p>
+          <blockquote class="quote-block">
+            At the center of everything is a simple belief:<br>
+            Progress isn't linear. Mistakes aren't final. And as long as I keep showing up with intent, I can rebuild anything—ideas, models, and even parts of myself.
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech-stack">
+      <div class="section-content">
+        <h2 class="tech-stack-title">Tech Stack</h2>
+
+        <div class="tech-category">
+          <h3 class="tech-category-title">AI & Machine Learning</h3>
+          <div class="tech-items">
+            <span class="tech-item">Python</span>
+            <span class="tech-item">NumPy</span>
+            <span class="tech-item">Pandas</span>
+            <span class="tech-item">Scikit-learn</span>
+            <span class="tech-item">TensorFlow</span>
+            <span class="tech-item">PyTorch</span>
+            <span class="tech-item">R</span>
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <h3 class="tech-category-title">Web / frontend</h3>
+          <div class="tech-items">
+            <span class="tech-item">HTML</span>
+            <span class="tech-item">CSS</span>
+            <span class="tech-item">JavaScript</span>
+            <span class="tech-item">Vue.js</span>
+            <span class="tech-item">TailwindCSS</span>
+            <span class="tech-item">Bootstrap</span>
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <h3 class="tech-category-title">Backend & APIs</h3>
+          <div class="tech-items">
+            <span class="tech-item">Flask</span>
+            <span class="tech-item">FastAPI</span>
+            
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <h3 class="tech-category-title">Databases</h3>
+          <div class="tech-items">
+            <span class="tech-item">SQLite</span>
+            <span class="tech-item">PostgreSQL</span>
+            <span class="tech-item">MySQL</span>
+            <span class="tech-item">Kafka</span>
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <h3 class="tech-category-title">Tools & Other</h3>
+          <div class="tech-items">
+            <span class="tech-item">Git</span>
+            <span class="tech-item">GitHub</span>
+            <span class="tech-item">Linux</span>
+            <span class="tech-item">VSCode</span>
+            <span class="tech-item">Docker (Basics)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+      <div class="section-content">
+        <h2 class="section-title">My Projects</h2>
+        <p class="section-subtitle">Here you can find all my major works</p>
+
+        <!-- Filter Buttons -->
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="ml">Machine Learning</button>
+          <button class="filter-btn" data-filter="python">Python</button>
+          <button class="filter-btn" data-filter="webdev">Web Development</button>
+        </div>
+
+        <!-- Projects Container -->
+        <div class="project-grid" id="projects-container">
+          <!-- Projects will be dynamically loaded here -->
+        </div>
+
+        <!-- View More Projects Button -->
+        <div class="view-all-container">
+          <button class="view-all-btn" id="view-all-projects-btn">View All Projects</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- My Journey Section -->
+    <section id="journey">
+      <div class="journey-container">
+        <!-- Vertical Cosmic Beam -->
+        <div class="cosmic-beam"></div>
+
+        <!-- Milestone 1 - AI/ML Intern at Auracle Labs -->
+        <div class="milestone">
+          <div class="star-node"></div>
+          <div class="connecting-line"></div>
+          <div class="milestone-card">
+            <div class="constellation-icon">
+              <svg viewBox="0 0 40 40">
+                <line x1="10" y1="20" x2="30" y2="20" />
+                <line x1="20" y1="10" x2="20" y2="30" />
+                <circle cx="20" cy="20" r="2" />
+                <circle cx="10" cy="20" r="1.5" />
+                <circle cx="30" cy="20" r="1.5" />
+              </svg>
+            </div>
+            <div class="milestone-date">Oct 2025 – Present</div>
+            <div class="milestone-role">AI/ML Intern — Auracle Labs</div>
+            <div class="milestone-description">
+              Building ML systems with a focus on RAG, memory retrieval, and personalization.<br>
+              Developing scalable data pipelines and backend components for AI-driven products.
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone 2 - Researcher at Quantix -->
+        <div class="milestone">
+          <div class="star-node"></div>
+          <div class="connecting-line"></div>
+          <div class="milestone-card">
+            <div class="constellation-icon">
+              <svg viewBox="0 0 40 40">
+                <line x1="15" y1="15" x2="25" y2="25" />
+                <line x1="25" y1="15" x2="15" y2="25" />
+                <circle cx="20" cy="20" r="2" />
+                <circle cx="15" cy="15" r="1.5" />
+                <circle cx="25" cy="25" r="1.5" />
+              </svg>
+            </div>
+            <div class="milestone-date">Jan 2025 – Sep 2025</div>
+            <div class="milestone-role">Researcher — Quantix (Quant & Consulting Club), IIT Madras</div>
+            <div class="milestone-description">
+              Conducted research in quantitative finance with focus on stochastic modeling and market behavior.<br>
+              Worked on translating theoretical ideas into implementable strategies and simulations.
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone 3 - Data Analyst Intern at ABIS Exports -->
+        <div class="milestone">
+          <div class="star-node"></div>
+          <div class="connecting-line"></div>
+          <div class="milestone-card">
+            <div class="constellation-icon">
+              <svg viewBox="0 0 40 40">
+                <line x1="10" y1="15" x2="20" y2="25" />
+                <line x1="20" y1="25" x2="30" y2="15" />
+                <circle cx="20" cy="25" r="2" />
+                <circle cx="10" cy="15" r="1.5" />
+                <circle cx="30" cy="15" r="1.5" />
+              </svg>
+            </div>
+            <div class="milestone-date">May 2025 – Jun 2025</div>
+            <div class="milestone-role">Data Analyst Intern — ABIS Exports (IB Group)</div>
+            <div class="milestone-description">
+              Analyzed real-world datasets with focus on data quality, validation, and trend extraction.<br>
+              Automated reporting processes using Excel, SQL, and visualization tools.<br>
+              Supported decision-making by uncovering operational inefficiencies through data insights.
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone 4 - Outreach Coordinator at InfinAI -->
+        <div class="milestone">
+          <div class="star-node"></div>
+          <div class="connecting-line"></div>
+          <div class="milestone-card">
+            <div class="constellation-icon">
+              <svg viewBox="0 0 40 40">
+                <line x1="20" y1="10" x2="15" y2="30" />
+                <line x1="20" y1="10" x2="25" y2="30" />
+                <circle cx="20" cy="10" r="2" />
+                <circle cx="15" cy="30" r="1.5" />
+                <circle cx="25" cy="30" r="1.5" />
+              </svg>
+            </div>
+            <div class="milestone-date">Feb 2025 – Sep 2025</div>
+            <div class="milestone-role">Outreach Coordinator — InfinAI</div>
+            <div class="milestone-description">
+              Managed outreach, partnerships, and community engagement for the AI club.<br>
+              Organized events and onboarding processes to scale student involvement.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resume Section -->
+    <section id="resume">
+      <div class="section-content">
+        <h2 class="section-title">Resume</h2>
+        <p class="section-subtitle">Here's a quick overview of my core skills. Download the full resume for more!</p>
+
+        <div class="skills-container">
+          <div class="skill-badge">Python</div>
+          <div class="skill-badge">SQL</div>
+          <div class="skill-badge">Machine Learning</div>
+          <div class="skill-badge">Quant Finance</div>
+          <div class="skill-badge">Power BI</div>
+        </div>
+
+        <div class="resume-actions">
+          <a href="Krishna_Vallabha_Goswami_Resume.pdf" download class="resume-btn">Download Resume</a>
+          <a href="https://drive.google.com/file/d/1wnWY7JBnFeRQ4GMZrfkb_LBOh-96Aza1/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="resume-link">Or view it on Google Drive</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-content">
+        <h2 class="section-title">Get in Touch</h2>
+        <p class="section-subtitle">Let's build something impactful together.</p>
+        <div class="contact-content">
+          <div class="contact-info">
+            <a href="https://www.linkedin.com/in/krishna-vallabha-goswami-04b459299?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
+            <a href="https://github.com/krishnavallabha" target="_blank" rel="noopener noreferrer" class="contact-link">GitHub</a>
+            <a href="mailto:vallabhakrishna26@gmail.com" class="contact-link">vallabhakrishna26@gmail.com</a>
+            <p class="contact-phone">+91 94241 00261</p>
+          </div>
+          <p class="contact-location">India</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ==================== Unified Starfield Animation ====================
+    const starfieldCanvas = document.getElementById('starfield');
+    const starfieldCtx = starfieldCanvas.getContext('2d');
+    let stars = [];
+    const starCount = 200;
+    let scrollOffset = 0;
+
+    function resizeCanvas() {
+      starfieldCanvas.width = window.innerWidth;
+      starfieldCanvas.height = window.innerHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Star {
+      constructor() {
+        this.x = Math.random() * starfieldCanvas.width;
+        this.y = Math.random() * starfieldCanvas.height;
+        this.z = Math.random() * 2000;
+        this.size = Math.random() * 1.5;
+        this.speed = Math.random() * 0.1 + 0.02; // Slowed down significantly
+        this.baseY = this.y;
+      }
+
+      update() {
+        // Subtle drift animation (slowed down)
+        this.baseY += this.speed * 0.05; // Reduced from 0.1
+        if (this.baseY > starfieldCanvas.height) {
+          this.baseY = 0;
+        }
+
+        // Parallax effect based on scroll
+        const parallaxFactor = scrollOffset * 0.0001;
+        this.y = this.baseY + parallaxFactor * this.z;
+
+        this.z -= this.speed;
+        if (this.z <= 0) {
+          this.z = 2000;
+          this.x = Math.random() * starfieldCanvas.width;
+          this.y = Math.random() * starfieldCanvas.height;
+          this.baseY = this.y;
+        }
+      }
+
+      draw() {
+        const x = (this.x - starfieldCanvas.width / 2) * (2000 / this.z) + starfieldCanvas.width / 2;
+        const y = (this.y - starfieldCanvas.height / 2) * (2000 / this.z) + starfieldCanvas.height / 2;
+        const radius = this.size * (2000 / this.z);
+        const opacity = Math.max(0, Math.min(1, 1 - this.z / 2000));
+
+        starfieldCtx.beginPath();
+        starfieldCtx.arc(x, y, radius, 0, Math.PI * 2);
+        starfieldCtx.fillStyle = `rgba(228, 231, 234, ${opacity * 0.8})`;
+        starfieldCtx.fill();
+      }
+    }
+
+    for (let i = 0; i < starCount; i++) {
+      stars.push(new Star());
+    }
+
+    function animateStarfield() {
+      // Clear canvas completely to remove residue
+      starfieldCtx.clearRect(0, 0, starfieldCanvas.width, starfieldCanvas.height);
+
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+
+      requestAnimationFrame(animateStarfield);
+    }
+
+    // Update scroll offset for parallax
+    window.addEventListener('scroll', () => {
+      scrollOffset = window.pageYOffset;
+    });
+
+    animateStarfield();
+
+    // ==================== Smooth Scrolling ====================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    function scrollToSection(sectionId) {
+      const section = document.querySelector(sectionId);
+      if (section) {
+        section.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+
+    // ==================== Intersection Observer for Animations ====================
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('.section-title, .section-text, .section-subtitle, .project-grid, .contact-content, .quote-text, .name-text, .title-text, .quote-block, .view-all-container, .filter-buttons, .skills-container, .resume-actions, .tech-stack-title, .tech-category').forEach(el => {
+      observer.observe(el);
+    });
+
+    // ==================== Journey Timeline Animations ====================
+    const journeyObserverOptions = {
+      threshold: 0.3,
+      rootMargin: '0px'
+    };
+
+    const journeyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const milestone = entry.target;
+          const starNode = milestone.querySelector('.star-node');
+          const card = milestone.querySelector('.milestone-card');
+          const line = milestone.querySelector('.connecting-line');
+
+          // Add revealed class with slight delay for sequential effect
+          setTimeout(() => {
+            if (starNode) starNode.classList.add('revealed');
+          }, 100);
+
+          setTimeout(() => {
+            if (line) line.classList.add('revealed');
+          }, 300);
+
+          setTimeout(() => {
+            if (card) card.classList.add('revealed');
+            if (starNode) starNode.classList.add('active');
+          }, 500);
+        }
+      });
+    }, journeyObserverOptions);
+
+    // Observe all milestones
+    document.querySelectorAll('.milestone').forEach(milestone => {
+      journeyObserver.observe(milestone);
+    });
+
+
+    // ==================== Projects Functionality ====================
+    // Projects array - Add new projects at the beginning to show them first
+    const projectsData = [
+      {
+        name: 'Slotly',
+        description: 'A smart vehicle parking management system that allows users to view available slots, book them in real-time, and manage parking efficiently. Multi-user app with comprehensive analytics and admin dashboard.',
+        tech: 'Flask · Jinja2 · HTML · CSS · Bootstrap · SQLite',
+        slug: 'slotly',
+        github: 'https://github.com/krishnavallabha/vehicle-parking-app',
+        demo: null,
+        tags: ['webdev', 'python', 'web']
+      },
+      {
+        name: 'SerenityCare',
+        description: 'A full-stack hospital management system with real-time appointment booking, multi-role access (Admin, Doctor, Patient), treatment history tracking, and background task automation using Redis and Celery.',
+        tech: 'Flask · Vue.js · Bootstrap · SQLite · Redis · Celery · JWT',
+        slug: 'serenitycare',
+        github: 'https://github.com/krishnavallabha/iitm-mad2-hospital-managment-app',
+        demo: null,
+        tags: ['webdev', 'python', 'web']
+      }
+    ];
+
+    function generateSlug(name) {
+      return name.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    }
+
+    let currentFilter = 'all';
+
+    function renderProjects(filter = 'all', showAll = false) {
+      const container = document.getElementById('projects-container');
+      if (!container) return;
+
+      // Filter projects based on selected filter
+      let filteredProjects = projectsData;
+      if (!showAll && filter !== 'all') {
+        filteredProjects = projectsData.filter(project => 
+          project.tags && project.tags.includes(filter)
+        );
+      }
+      
+      // Always show newest projects first (array is already in reverse chronological order)
+
+      if (filteredProjects.length === 0) {
+        container.innerHTML = '<p class="section-text" style="text-align: center; grid-column: 1 / -1; opacity: 0.6;">No projects found matching this filter.</p>';
+        return;
+      }
+
+      container.innerHTML = filteredProjects.map(project => {
+        const slug = project.slug || generateSlug(project.name);
+        return `
+          <div class="project-card">
+            <h3 class="project-name">${project.name}</h3>
+            <p class="project-description">${project.description}</p>
+            ${project.tech ? `<div class="project-tech-tag">${project.tech}</div>` : ''}
+            <div class="project-actions">
+              <a href="projects/${slug}.html" class="project-btn">View Details</a>
+              <a href="${project.github}" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub</a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Observe project cards for fade-in animation
+      const projectCards = container.querySelectorAll('.project-card');
+      const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, index * 100);
+            cardObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      projectCards.forEach(card => {
+        cardObserver.observe(card);
+      });
+    }
+
+    // Filter button event listeners
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active state
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Get filter value and render
+        currentFilter = btn.getAttribute('data-filter');
+        renderProjects(currentFilter, false);
+      });
+    });
+
+    // View All Projects button
+    const viewAllBtn = document.getElementById('view-all-projects-btn');
+    if (viewAllBtn) {
+      viewAllBtn.addEventListener('click', () => {
+        // Set "All" filter as active
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+        if (allBtn) allBtn.classList.add('active');
+        
+        // Render all projects
+        currentFilter = 'all';
+        renderProjects('all', true);
+        
+        // Smooth scroll to projects section if not already visible
+        const projectsSection = document.getElementById('projects');
+        if (projectsSection) {
+          projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // Initialize projects on page load (show all, newest first)
+    if (document.getElementById('projects-container')) {
+      renderProjects('all', true);
+    }
+
+    // ==================== Interactive Constellation Builder (Home Section Only) ====================
+    const homeSection = document.getElementById('home');
+    const heroContent = document.querySelector('.hero-content');
+    const constellationCanvas = document.getElementById('constellationCanvas');
+    const constellationCtx = constellationCanvas.getContext('2d');
+    let nodes = [];
+    let lines = [];
+    let selectedNode = null;
+    let isDrawing = false;
+    let isDragging = false;
+    let dragNode = null;
+    let isInHomeSection = true;
+    let shimmerTime = 0;
+    let animationFrameId = null;
+
+    // Get hero panel bounds for opacity reduction
+    function getHeroBounds() {
+      if (!heroContent) return null;
+      const rect = heroContent.getBoundingClientRect();
+      const canvasRect = constellationCanvas.getBoundingClientRect();
+      return {
+        x: rect.left - canvasRect.left,
+        y: rect.top - canvasRect.top,
+        width: rect.width,
+        height: rect.height
+      };
+    }
+
+    function resizeConstellationCanvas() {
+      const homeRect = homeSection.getBoundingClientRect();
+      constellationCanvas.width = homeRect.width;
+      constellationCanvas.height = homeRect.height;
+      redrawConstellation();
+    }
+
+    resizeConstellationCanvas();
+    window.addEventListener('resize', resizeConstellationCanvas);
+
+    function redrawConstellation() {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+
+      animationFrameId = requestAnimationFrame(() => {
+        constellationCtx.clearRect(0, 0, constellationCanvas.width, constellationCanvas.height);
+
+        // Only draw if in home section
+        if (!isInHomeSection) return;
+
+        shimmerTime += 0.02;
+        const heroBounds = getHeroBounds();
+
+        // Draw lines with shimmer effect
+        lines.forEach((line, index) => {
+          const shimmer = Math.sin(shimmerTime + index * 0.5) * 0.2 + 0.6;
+          const opacity = shimmer * 0.7;
+          
+          constellationCtx.beginPath();
+          constellationCtx.moveTo(line.start.x, line.start.y);
+          constellationCtx.lineTo(line.end.x, line.end.y);
+          
+          // Reduce opacity if line is behind hero panel
+          let finalOpacity = opacity;
+          if (heroBounds) {
+            const midX = (line.start.x + line.end.x) / 2;
+            const midY = (line.start.y + line.end.y) / 2;
+            if (midX >= heroBounds.x && midX <= heroBounds.x + heroBounds.width &&
+                midY >= heroBounds.y && midY <= heroBounds.y + heroBounds.height) {
+              finalOpacity = opacity * 0.5;
+            }
+          }
+          
+          constellationCtx.strokeStyle = `rgba(228, 231, 234, ${finalOpacity})`;
+          constellationCtx.lineWidth = 1.5;
+          constellationCtx.stroke();
+        });
+
+        // Draw nodes with glow effect
+        nodes.forEach((node, index) => {
+          const glowIntensity = Math.sin(shimmerTime * 2 + index * 0.3) * 0.2 + 0.8;
+          
+          // Check if node is behind hero panel
+          const heroBounds = getHeroBounds();
+          let nodeOpacity = 0.9;
+          if (heroBounds) {
+            if (node.x >= heroBounds.x && node.x <= heroBounds.x + heroBounds.width &&
+                node.y >= heroBounds.y && node.y <= heroBounds.y + heroBounds.height) {
+              nodeOpacity = 0.6;
+            }
+          }
+
+          // Outer glow
+          const outerGradient = constellationCtx.createRadialGradient(
+            node.x, node.y, 0,
+            node.x, node.y, 8
+          );
+          outerGradient.addColorStop(0, `rgba(228, 231, 234, ${nodeOpacity * glowIntensity * 0.3})`);
+          outerGradient.addColorStop(0.5, `rgba(228, 231, 234, ${nodeOpacity * glowIntensity * 0.15})`);
+          outerGradient.addColorStop(1, 'rgba(228, 231, 234, 0)');
+
+          constellationCtx.beginPath();
+          constellationCtx.arc(node.x, node.y, 8, 0, Math.PI * 2);
+          constellationCtx.fillStyle = outerGradient;
+          constellationCtx.fill();
+
+          // Inner core
+          const innerGradient = constellationCtx.createRadialGradient(
+            node.x, node.y, 0,
+            node.x, node.y, 4
+          );
+          innerGradient.addColorStop(0, `rgba(228, 231, 234, ${nodeOpacity * glowIntensity})`);
+          innerGradient.addColorStop(0.5, `rgba(228, 231, 234, ${nodeOpacity * glowIntensity * 0.6})`);
+          innerGradient.addColorStop(1, 'rgba(228, 231, 234, 0)');
+
+          constellationCtx.beginPath();
+          constellationCtx.arc(node.x, node.y, 3.5, 0, Math.PI * 2);
+          constellationCtx.fillStyle = innerGradient;
+          constellationCtx.fill();
+        });
+
+        // Draw preview line
+        if (selectedNode && isDrawing && selectedNode.previewX !== undefined) {
+          constellationCtx.beginPath();
+          constellationCtx.moveTo(selectedNode.x, selectedNode.y);
+          constellationCtx.lineTo(selectedNode.previewX, selectedNode.previewY);
+          constellationCtx.strokeStyle = 'rgba(252, 129, 57, 0.5)';
+          constellationCtx.lineWidth = 1;
+          constellationCtx.setLineDash([5, 5]);
+          constellationCtx.stroke();
+          constellationCtx.setLineDash([]);
+        }
+
+        // Continue animation
+        animationFrameId = requestAnimationFrame(redrawConstellation);
+      });
+    }
+
+    // Check if we're in home section
+    // Get constellation controls element
+    const constellationControls = document.querySelector('.constellation-controls');
+    
+    function checkHomeSection() {
+      const homeRect = homeSection.getBoundingClientRect();
+      isInHomeSection = homeRect.top <= 0 && homeRect.bottom > 0;
+      constellationCanvas.style.pointerEvents = isInHomeSection ? 'auto' : 'none';
+      
+      // Show/hide controls based on home section visibility
+      if (constellationControls) {
+        if (isInHomeSection) {
+          constellationControls.classList.remove('hidden');
+        } else {
+          constellationControls.classList.add('hidden');
+        }
+      }
+      
+      if (!isInHomeSection) {
+        selectedNode = null;
+        isDrawing = false;
+        isDragging = false;
+        dragNode = null;
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+      } else {
+        redrawConstellation();
+      }
+    }
+
+    window.addEventListener('scroll', checkHomeSection);
+    checkHomeSection();
+
+    function getNodeAt(x, y) {
+      return nodes.find(node => {
+        const dx = node.x - x;
+        const dy = node.y - y;
+        return Math.sqrt(dx * dx + dy * dy) < 12;
+      });
+    }
+
+    function addNode(x, y) {
+      nodes.push({ x, y, id: Date.now() });
+      redrawConstellation();
+    }
+
+    function connectNodes(startNode, endNode) {
+      if (startNode && endNode && startNode.id !== endNode.id) {
+        // Check if connection already exists
+        const exists = lines.some(line => 
+          (line.startIndex === startNode.id && line.endIndex === endNode.id) ||
+          (line.startIndex === endNode.id && line.endIndex === startNode.id)
+        );
+        if (!exists) {
+          lines.push({
+            start: { x: startNode.x, y: startNode.y },
+            end: { x: endNode.x, y: endNode.y },
+            startIndex: startNode.id,
+            endIndex: endNode.id,
+            id: Date.now()
+          });
+          redrawConstellation();
+        }
+      }
+    }
+
+    function updateLinesForNode(node) {
+      lines.forEach(line => {
+        if (line.startIndex === node.id) {
+          line.start.x = node.x;
+          line.start.y = node.y;
+        }
+        if (line.endIndex === node.id) {
+          line.end.x = node.x;
+          line.end.y = node.y;
+        }
+      });
+    }
+
+    // Mouse Events
+    constellationCanvas.addEventListener('mousedown', (e) => {
+      if (!isInHomeSection) return;
+      const rect = constellationCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const node = getNodeAt(x, y);
+
+      if (node) {
+        // Start dragging
+        isDragging = true;
+        dragNode = node;
+        selectedNode = node;
+        constellationCanvas.style.cursor = 'grabbing';
+      } else {
+        // Place new node or start connecting
+        addNode(x, y);
+        const newNode = nodes[nodes.length - 1];
+        if (selectedNode && !isDragging) {
+          connectNodes(selectedNode, newNode);
+          selectedNode = newNode;
+        } else {
+          selectedNode = newNode;
+        }
+      }
+    });
+
+    constellationCanvas.addEventListener('mousemove', (e) => {
+      if (!isInHomeSection) return;
+      const rect = constellationCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      if (isDragging && dragNode) {
+        // Drag node
+        dragNode.x = x;
+        dragNode.y = y;
+        updateLinesForNode(dragNode);
+        redrawConstellation();
+      } else if (isDrawing && selectedNode) {
+        // Preview connection
+        selectedNode.previewX = x;
+        selectedNode.previewY = y;
+        redrawConstellation();
+      } else {
+        // Check if hovering over node
+        const node = getNodeAt(x, y);
+        constellationCanvas.style.cursor = node ? 'grab' : 'crosshair';
+      }
+    });
+
+    constellationCanvas.addEventListener('mouseup', (e) => {
+      if (!isInHomeSection) return;
+      if (isDragging && dragNode) {
+        isDragging = false;
+        dragNode = null;
+        constellationCanvas.style.cursor = 'crosshair';
+      } else if (isDrawing && selectedNode) {
+        const rect = constellationCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const node = getNodeAt(x, y);
+        if (node && node.id !== selectedNode.id) {
+          connectNodes(selectedNode, node);
+          selectedNode = node;
+        } else {
+          selectedNode = null;
+        }
+        isDrawing = false;
+        delete selectedNode.previewX;
+        delete selectedNode.previewY;
+        redrawConstellation();
+      }
+    });
+
+    constellationCanvas.addEventListener('mouseleave', () => {
+      if (isDragging) {
+        isDragging = false;
+        dragNode = null;
+      }
+      if (isDrawing && selectedNode) {
+        delete selectedNode.previewX;
+        delete selectedNode.previewY;
+      }
+      constellationCanvas.style.cursor = 'crosshair';
+      redrawConstellation();
+    });
+
+    // Touch Events for Mobile
+    constellationCanvas.addEventListener('touchstart', (e) => {
+      if (!isInHomeSection) return;
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = constellationCanvas.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      const node = getNodeAt(x, y);
+
+      if (node) {
+        isDragging = true;
+        dragNode = node;
+        selectedNode = node;
+      } else {
+        addNode(x, y);
+        const newNode = nodes[nodes.length - 1];
+        if (selectedNode && !isDragging) {
+          connectNodes(selectedNode, newNode);
+          selectedNode = newNode;
+        } else {
+          selectedNode = newNode;
+        }
+      }
+    });
+
+    constellationCanvas.addEventListener('touchmove', (e) => {
+      if (!isInHomeSection) return;
+      e.preventDefault();
+      if (isDragging && dragNode && e.touches.length > 0) {
+        const touch = e.touches[0];
+        const rect = constellationCanvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        dragNode.x = x;
+        dragNode.y = y;
+        updateLinesForNode(dragNode);
+        redrawConstellation();
+      }
+    });
+
+    constellationCanvas.addEventListener('touchend', (e) => {
+      if (!isInHomeSection) return;
+      e.preventDefault();
+      if (isDragging) {
+        isDragging = false;
+        dragNode = null;
+      }
+    });
+
+    // Control Functions
+    function clearConstellation() {
+      nodes = [];
+      lines = [];
+      selectedNode = null;
+      isDrawing = false;
+      isDragging = false;
+      dragNode = null;
+      redrawConstellation();
+    }
+
+    function undoLastLine() {
+      if (lines.length > 0) {
+        lines.pop();
+        redrawConstellation();
+      }
+    }
+
+    function saveConstellation() {
+      const link = document.createElement('a');
+      link.download = 'constellation.png';
+      link.href = constellationCanvas.toDataURL();
+      link.click();
+    }
+
+    // Make functions globally available
+    window.clearConstellation = clearConstellation;
+    window.undoLastLine = undoLastLine;
+    window.saveConstellation = saveConstellation;
+
+    // Initial draw
+    redrawConstellation();
+  </script>
+</body>
+</html>
